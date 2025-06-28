@@ -1,5 +1,5 @@
 import { ApiProperty } from '@nestjs/swagger';
-import { Article } from 'generated/prisma';
+import { Article } from 'generated/prisma/client';
 
 export class ArticleEntity implements Article {
   published: boolean;

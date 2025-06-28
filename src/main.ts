@@ -4,12 +4,13 @@ import { DocumentBuilder, SwaggerModule } from '@nestjs/swagger';
 
 async function bootstrap() {
   const app = await NestFactory.create(AppModule);
+  app.setGlobalPrefix('api/v1');
 
-  const config =  new DocumentBuilder()
-  .setTitle("Bloxx")
-  .setDescription('The Bloxx API description')
-  .setVersion('0.1')
-  .build()
+  const config = new DocumentBuilder()
+    .setTitle('Bloxx')
+    .setDescription('The Bloxx API description')
+    .setVersion('0.1')
+    .build();
 
   const document = SwaggerModule.createDocument(app, config);
   SwaggerModule.setup('api', app, document);

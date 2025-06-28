@@ -12,7 +12,7 @@ async function main() {
       body: "Prisma now supports MongoDB, allowing developers to use Prisma's powerful features with MongoDB databases.",
       description:
         "We are excited to share that today's Prisma ORM release adds stable support for MongoDB!",
-      categories: ['FINANCE'],
+      category: 'FINANCE',
 
       published: false,
     },
@@ -28,7 +28,7 @@ async function main() {
       body: 'The latest release of Prisma ORM includes several new features and improvements.',
       description:
         'Check out the latest release notes for Prisma ORM to learn about new features and improvements.',
-      categories: ['FINANCE'],
+      category: 'FINANCE',
       published: true,
     },
   });

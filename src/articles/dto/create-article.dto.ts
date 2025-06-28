@@ -1,15 +1,23 @@
-import { ApiProperty } from "@nestjs/swagger";
+import { ApiProperty } from '@nestjs/swagger';
+
+import { categoriesRole } from 'src/helpers/data';
 
 export class CreateArticleDto {
   @ApiProperty()
-  title: string
+  title: string;
 
-  @ApiProperty({ required: false})
-  description?: string
+  @ApiProperty()
+  image: string;
 
-  @ApiProperty() 
+  @ApiProperty({ required: false })
+  description?: string;
+
+  @ApiProperty()
   body: string;
 
-  @ApiProperty({ required: false, default: false})
+  @ApiProperty()
+  categories: categoriesRole[];
+
+  @ApiProperty({ required: false, default: false })
   published?: boolean = false;
 }

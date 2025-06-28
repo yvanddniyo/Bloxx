@@ -7,7 +7,7 @@ export class CreateArticleDto {
   title: string;
 
   @ApiProperty()
-  image: string;
+  imageUrl: string;
 
   @ApiProperty({ required: false })
   description?: string;

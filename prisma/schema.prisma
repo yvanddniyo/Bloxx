@@ -1,6 +1,6 @@
 generator client {
   provider = "prisma-client-js"
-  output   = "../generated/prisma/client"
+
 }
 
 datasource db {
@@ -9,15 +9,15 @@ datasource db {
 }
 
 model Article {
+  id          Int          @id @default(autoincrement())
+  imageUrl       String
   title       String       @unique
   description String?
   body        String
+  categories  Categories[]
   published   Boolean      @default(false)
   createAte   DateTime     @default(now())
   updatedAt   DateTime     @updatedAt
-  id          Int          @id @default(autoincrement())
-  categories  Categories[]
-  image       String
 }
 
 enum Categories {

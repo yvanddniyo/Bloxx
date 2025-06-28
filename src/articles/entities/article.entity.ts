@@ -1,5 +1,5 @@
 import { ApiProperty } from '@nestjs/swagger';
-import { Article } from 'generated/prisma/client';
+import { Article } from '@prisma/client';
 import { categoriesRole } from 'src/helpers/data';
 
 export class ArticleEntity implements Article {
@@ -8,7 +8,7 @@ export class ArticleEntity implements Article {
   id: number;
 
   @ApiProperty()
-  image: string;
+  imageUrl: string;
 
   @ApiProperty()
   title: string;

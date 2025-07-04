@@ -1,12 +1,20 @@
+-- CreateEnum
+CREATE TYPE "Category" AS ENUM ('TUTORIAL', 'TECH_NEWS', 'FINANCE');
+
 -- CreateTable
 CREATE TABLE "Article" (
-    "id" TEXT NOT NULL,
+    "id" SERIAL NOT NULL,
+    "imageUrl" TEXT NOT NULL,
     "title" TEXT NOT NULL,
     "description" TEXT,
     "body" TEXT NOT NULL,
+    "category" "Category" NOT NULL DEFAULT 'TECH_NEWS',
     "published" BOOLEAN NOT NULL DEFAULT false,
     "createAte" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
     "updatedAt" TIMESTAMP(3) NOT NULL,
 
     CONSTRAINT "Article_pkey" PRIMARY KEY ("id")
 );
+
+-- CreateIndex
+CREATE UNIQUE INDEX "Article_title_key" ON "Article"("title");

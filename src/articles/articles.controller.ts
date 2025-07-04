@@ -6,12 +6,24 @@ import {
   Patch,
   Param,
   Delete,
+  UseInterceptors,
+  UploadedFile,
+  BadRequestException,
 } from '@nestjs/common';
 import { ArticlesService } from './articles.service';
 import { CreateArticleDto } from './dto/create-article.dto';
 import { UpdateArticleDto } from './dto/update-article.dto';
-import { ApiCreatedResponse, ApiOkResponse, ApiTags } from '@nestjs/swagger';
+import {
+  ApiBody,
+  ApiConsumes,
+  ApiCreatedResponse,
+  ApiOkResponse,
+  ApiTags,
+} from '@nestjs/swagger';
 import { ArticleEntity } from './entities/article.entity';
+import { FileInterceptor } from '@nestjs/platform-express';
+import { createAndUpdateSchema } from './schemaArticle/createAndUpdate';
+import { swaggerFormat } from './schemaArticle/swaggerFormat';
 
 @Controller('articles')
 @ApiTags('articles')
@@ -20,9 +32,21 @@ export class ArticlesController {
 
   @Post()
   @ApiCreatedResponse({ type: ArticleEntity })
-  create(@Body() createArticleDto: CreateArticleDto) {
-    return this.articlesService.create(createArticleDto);
+  @UseInterceptors(FileInterceptor('imageUrl'))
+  @ApiConsumes('multipart/form-data')
+  @ApiBody(swaggerFormat)
+  async create(
+    @UploadedFile() file: Express.Multer.File,
+    @Body() createArticleDto: CreateArticleDto,
+  ) {
+    const validateSchema = createAndUpdateSchema.safeParse(createArticleDto);
+    if (!validateSchema.success) {
+      throw new BadRequestException(validateSchema.error.format());
+    }
+    const result = await this.articlesService.create(file, validateSchema.data);
+    return result;
   }
+
   @Get('draft')
   @ApiOkResponse({ type: ArticleEntity, isArray: true })
   findDraft() {
@@ -41,9 +65,32 @@ export class ArticlesController {
   }
 
   @Patch(':id')
+  @ApiCreatedResponse({ type: ArticleEntity })
+  @UseInterceptors(FileInterceptor('imageUrl'))
+  @ApiConsumes('multipart/form-data')
   @ApiOkResponse({ type: ArticleEntity })
-  update(@Param('id') id: string, @Body() updateArticleDto: UpdateArticleDto) {
-    return this.articlesService.update(+id, updateArticleDto);
+  async update(
+    @Param('id') id: string,
+    @UploadedFile() file: Express.Multer.File,
+    @Body() updateArticleDto: UpdateArticleDto,
+  ) {
+    const updatedArticle = this.articlesService.update(
+      +id,
+      file,
+      updateArticleDto,
+    );
+    const validateSchema = createAndUpdateSchema.safeParse(updateArticleDto);
+    console.log('upload', updateArticleDto);
+    if (!validateSchema.success) {
+      throw new BadRequestException(validateSchema.error.format());
+    }
+    console.log('data', validateSchema.data);
+    const resultUpdate = await this.articlesService.update(
+      +id,
+      file,
+      validateSchema.data,
+    );
+    return resultUpdate;
   }
 
   @Delete(':id')

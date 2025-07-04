@@ -1,23 +1,24 @@
 import { ApiProperty } from '@nestjs/swagger';
 
+import { IsBoolean, IsEnum, IsOptional, IsString } from 'class-validator';
+
 import { categoriesRole } from 'src/helpers/data';
 
 export class CreateArticleDto {
   @ApiProperty()
   title: string;
-
-  @ApiProperty()
-  imageUrl: string;
-
   @ApiProperty({ required: false })
   description?: string;
 
   @ApiProperty()
   body: string;
 
-  @ApiProperty()
-  categories: categoriesRole[];
+  @IsEnum(categoriesRole)
+  category: categoriesRole;
 
   @ApiProperty({ required: false, default: false })
-  published?: boolean = false;
+  @IsBoolean()
+  @IsString()
+  @IsOptional()
+  published?: boolean | string = false;
 }

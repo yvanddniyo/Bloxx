@@ -1,9 +1,9 @@
 import { ApiProperty } from '@nestjs/swagger';
 import { Article } from '@prisma/client';
+import { IsEnum } from 'class-validator';
 import { categoriesRole } from 'src/helpers/data';
 
 export class ArticleEntity implements Article {
-  published: boolean;
   @ApiProperty()
   id: number;
 
@@ -19,8 +19,11 @@ export class ArticleEntity implements Article {
   @ApiProperty()
   body: string;
 
-  @ApiProperty()
-  categories: categoriesRole[];
+  @IsEnum(categoriesRole)
+  category: categoriesRole;
+
+  @ApiProperty({ required: false, default: false })
+  published: boolean = false;
 
   @ApiProperty()
   createAte: Date;

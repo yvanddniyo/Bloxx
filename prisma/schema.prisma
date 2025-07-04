@@ -14,13 +14,13 @@ model Article {
   title       String       @unique
   description String?
   body        String
-  categories  Categories[]
+  category  Category @default(TECH_NEWS)
   published   Boolean      @default(false)
   createAte   DateTime     @default(now())
   updatedAt   DateTime     @updatedAt
 }
 
-enum Categories {
+enum Category {
   TUTORIAL
   TECH_NEWS
   FINANCE

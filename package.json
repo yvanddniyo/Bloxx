@@ -6,10 +6,10 @@
   "private": true,
   "license": "UNLICENSED",
   "scripts": {
-    "build": "nest build",
-    "dev": "nest start --watch",
+    "build": "node api.js && nest build",
+    "dev": "node api.js && nest start --watch",
     "format": "prettier --write \"src/**/*.ts\" \"test/**/*.ts\"",
-    "start": "nest start",
+    "start": "node api.js && nest start",
     "generate": "npx prisma generate",
     "postinstall": "npm run build && prisma generate",
     "start:dev": "nest start --watch",
